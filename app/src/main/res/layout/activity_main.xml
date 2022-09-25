@@ -10,43 +10,53 @@
         android:id="@+id/mainHeaderTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/fork_rev_robotics"
         android:textAlignment="center"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
     <TextView
         android:id="@+id/displayTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="182dp"
         android:text="@string/display_text_here"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="@+id/mainHeaderTxt"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/mainHeaderTxt"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/mainHeaderTxt" />
 
     <Button
         android:id="@+id/connBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="345dp"
+        android:layout_marginTop="482dp"
         android:text="@string/button"
-        app:layout_constraintEnd_toEndOf="@+id/displayTxt"
-        app:layout_constraintStart_toStartOf="@+id/displayTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pressedTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
         android:text="@string/button_pressed"
-        app:layout_constraintBottom_toTopOf="@+id/displayTxt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/displayTxt"
         app:layout_constraintTop_toBottomOf="@+id/mainHeaderTxt" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

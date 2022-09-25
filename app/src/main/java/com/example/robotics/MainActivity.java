@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         connBtn = findViewById(R.id.connBtn);
 
         if( initBT() ){
-            System.out.println("BT ON");
+
         }
 
 
@@ -269,21 +269,31 @@ public class MainActivity extends AppCompatActivity {
 
             Set<BluetoothDevice> pairedDevice = BT.getBondedDevices();
 
+
             if (pairedDevice.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "No devices paired", Toast.LENGTH_SHORT).show();
             } else {
-                final String ROBOT_ADDRESS = "00:20:01:31:DF:F9";
+
+                final String SWARM1 = "00:22:03:01:16:22";
+                final String SWARM2 = "00:22:03:01:15:34";
+                final String SWARM3 = "00:20:01:31:DF:F9";
+                final String SWARM4 = "00:22:03:01:0A:15";
+                final String SWARM5 = "00:20:04:32:32:CA";
+                //final String ROBOT_ADDRESS = "00:22:03:01:19:13";
+
 
                 for (BluetoothDevice iterator : pairedDevice) {
-                    if (iterator.getAddress().equals(ROBOT_ADDRESS)) {
+                    if (iterator.getAddress().equals(SWARM5)) {
+
                         device = iterator;
                         devicePaired = true;
                         Toast.makeText(getApplicationContext(), "Device Paired", Toast.LENGTH_SHORT).show();
+                        String SWARM = device.getName();
                         try{
                             socket = device.createRfcommSocketToServiceRecord(UUID_PORT);
                             socket.connect();
                             outputStream = socket.getOutputStream();
-                            displayTxt.setText("Connected");
+                            displayTxt.setText("Connected to: " + SWARM);
 
                         }catch(IOException e){
                             e.printStackTrace();
