@@ -1,5 +1,6 @@
 package com.example.robotics;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -12,6 +13,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -48,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         pressedTxt = (TextView) findViewById(R.id.pressedTxt);
         connBtn = findViewById(R.id.connBtn);
 
-        if( initBT() ){
-
-        }
+//        if( initBT() ){
+//
+//        }
 
 
         connBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +66,49 @@ public class MainActivity extends AppCompatActivity {
         });//end onClickListener
 
     }// end onCreate
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu,menu);
+        return true;
+    }//end onCreateOptionsMenu
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.BT_menu:
+                Toast.makeText(this,"BT MENU",Toast.LENGTH_SHORT).show();
+                initBT();
+                return true;
+
+            case R.id.item1:
+                Toast.makeText(this,"Item 1 Selected",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.exit:
+                finish();
+                return true;
+
+            case R.id.settings:
+                Toast.makeText(this,"Settings Selected",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.subItem1:
+                Toast.makeText(this,"SubItem 1 Selected",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.subItem2:
+                Toast.makeText(this,"SubItem 2 Selected",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }//end switch
+
+
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -283,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for (BluetoothDevice iterator : pairedDevice) {
-                    if (iterator.getAddress().equals(SWARM5)) {
+                    if(iterator.getAddress().equals(SWARM4)){
 
                         device = iterator;
                         devicePaired = true;
@@ -307,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
             }//else
         } else {
             Toast.makeText(getApplicationContext(), "Bluetooth not supported", Toast.LENGTH_SHORT).show();
-            finish();
+            //finish();
         }
 
         return found;
