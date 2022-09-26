@@ -2,14 +2,12 @@ package com.example.robotics;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -18,28 +16,35 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
-    private final UUID UUID_PORT = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-    private boolean devicePaired = false;
-    private BluetoothDevice device;
-    private BluetoothAdapter BT = BluetoothAdapter.getDefaultAdapter();
+
+    //Attributes
+    private ListView listView;
     private TextView displayTxt;
     private TextView pressedTxt;
-    private Button connBtn;
     private Dpad dpad = new Dpad();
 
+    //Bluetooth Attributes
+    private final UUID UUID_PORT = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+    private BluetoothDevice swarmDevice;
+    private final BluetoothAdapter BT = BluetoothAdapter.getDefaultAdapter();
     private BluetoothSocket socket;
-//    private InputStream inStream;
     private OutputStream outputStream;
+
+    private String chosenSwarm;
+
 
 
     @Override
@@ -50,20 +55,8 @@ public class MainActivity extends AppCompatActivity {
         //create variables for items
         displayTxt = (TextView) findViewById(R.id.displayTxt);
         pressedTxt = (TextView) findViewById(R.id.pressedTxt);
-        connBtn = findViewById(R.id.connBtn);
-
-//        if( initBT() ){
-//
-//        }
-
-
-        connBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-
-
-            }
-        });//end onClickListener
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(deviceList);
 
     }// end onCreate
 
@@ -78,8 +71,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.BT_menu:
-                Toast.makeText(this,"BT MENU",Toast.LENGTH_SHORT).show();
-                initBT();
+                turnBTOn();
+                try{
+                    if(socket != null && socket.isConnected()){
+                        socket.close();
+                        displayTxt.setText(R.string.swarmConnection);
+                    }
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
                 return true;
 
             case R.id.item1:
@@ -108,8 +108,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    }
+    }//end itemSelected
 
+    @SuppressLint("MissingPermission")
+    private AdapterView.OnItemClickListener deviceList = new AdapterView.OnItemClickListener(){
+        public void onItemClick(AdapterView parent, View view, int pos, long id){
+
+            chosenSwarm = (String) listView.getItemAtPosition(pos);
+            System.out.println("Swarm selected: "+ chosenSwarm);
+            initSwarmConnection();
+            listView.setVisibility(ListView.INVISIBLE);
+
+        }
+    };
+
+
+    //Game Controller input Methods
     @Override
     public void onBackPressed() {
 
@@ -289,76 +303,72 @@ public class MainActivity extends AppCompatActivity {
 
     }//end processJoyStickInput
 
-    private boolean initBT(){
-        boolean found = false;
-
-        if (BT != null) { // if BT is null, device does not support Bluetooth
-            if (!BT.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return found;
-                }
-                startActivityForResult(enableBtIntent, 1);
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            Set<BluetoothDevice> pairedDevice = BT.getBondedDevices();
 
 
-            if (pairedDevice.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "No devices paired", Toast.LENGTH_SHORT).show();
-            } else {
-
-                final String SWARM1 = "00:22:03:01:16:22";
-                final String SWARM2 = "00:22:03:01:15:34";
-                final String SWARM3 = "00:20:01:31:DF:F9";
-                final String SWARM4 = "00:22:03:01:0A:15";
-                final String SWARM5 = "00:20:04:32:32:CA";
-                //final String ROBOT_ADDRESS = "00:22:03:01:19:13";
 
 
-                for (BluetoothDevice iterator : pairedDevice) {
-                    if(iterator.getAddress().equals(SWARM4)){
+    //Bluetooth Methods
+    @SuppressLint("MissingPermission")
+    public void turnBTOn() {
+        if (!BT.isEnabled()) {
 
-                        device = iterator;
-                        devicePaired = true;
-                        Toast.makeText(getApplicationContext(), "Device Paired", Toast.LENGTH_SHORT).show();
-                        String SWARM = device.getName();
-                        try{
-                            socket = device.createRfcommSocketToServiceRecord(UUID_PORT);
-                            socket.connect();
-                            outputStream = socket.getOutputStream();
-                            displayTxt.setText("Connected to: " + SWARM);
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 1);
+            Toast.makeText(getApplicationContext(), "Bluetooth Turned On", Toast.LENGTH_LONG).show();
 
-                        }catch(IOException e){
-                            e.printStackTrace();
-                        }
-
-                        found = true;
-                        break;
-                    }//if
-                }// for
-
-            }//else
         } else {
-            Toast.makeText(getApplicationContext(), "Bluetooth not supported", Toast.LENGTH_SHORT).show();
-            //finish();
+            listPairedSwarms();
         }
-
-        return found;
     }
+
+    @SuppressLint("MissingPermission")
+    public void off(View v) {
+        BT.disable();
+        Toast.makeText(getApplicationContext(), "Turned off", Toast.LENGTH_LONG).show();
+    }
+
+    @SuppressLint("MissingPermission")
+    public void visible(View v) {
+        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        startActivityForResult(getVisible, 0);
+    }
+
+    @SuppressLint("MissingPermission")
+    public void listPairedSwarms() {
+        Set <BluetoothDevice> deviceList = BT.getBondedDevices();// A list of Bluetooth devices
+        ArrayList <String> deviceNames = new ArrayList<String>();// A list of device names
+
+        // looping through deviceList to populate deviceNames
+        for(BluetoothDevice device : deviceList) deviceNames.add(device.getName());
+
+
+        Toast.makeText(getApplicationContext(), "Showing Paired Devices",Toast.LENGTH_SHORT).show();
+
+        final ArrayAdapter adapter = new  ArrayAdapter(this,android.R.layout.simple_list_item_1, deviceNames);
+
+        listView.setAdapter(adapter);
+        listView.setVisibility(ListView.VISIBLE);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initSwarmConnection(){
+        Set<BluetoothDevice> pairedDevice = BT.getBondedDevices();
+
+        for(BluetoothDevice pDevice: pairedDevice){
+            if(pDevice.getName().equals(chosenSwarm)){
+                swarmDevice = pDevice;
+                try{
+                    socket = swarmDevice.createRfcommSocketToServiceRecord(UUID_PORT);
+                    socket.connect();
+                    outputStream = socket.getOutputStream();
+                    displayTxt.setText("Connected to: " + chosenSwarm);
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                break;
+            }//end if device name == chosenSwarm
+        }//end for loop pairedDevice
+    }// end initSwarmConnection()
 
     private void sendData(String data){
         try {
@@ -372,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }//end sendData
+
 
 
 

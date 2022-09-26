@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Robotics</string>
     <string name="fork_rev_robotics"> S.A.R Driver Station</string>
-    <string name="display_text_here">Not Connected</string>
+    <string name="swarmConnection">Not Connected</string>
     <string name="button">Connect</string>
     <string name="button_pressed">Button Pressed:</string>
 </resources>

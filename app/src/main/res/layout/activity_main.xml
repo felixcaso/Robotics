@@ -22,28 +22,25 @@
         android:id="@+id/displayTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/display_text_here"
+        android:text="@string/swarmConnection"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/mainHeaderTxt"
         app:layout_constraintTop_toBottomOf="@+id/mainHeaderTxt" />
-
-    <Button
-        android:id="@+id/connBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        android:text="@string/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/pressedTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
         android:text="@string/button_pressed"
-        app:layout_constraintStart_toEndOf="@+id/displayTxt"
-        app:layout_constraintTop_toBottomOf="@+id/mainHeaderTxt" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayTxt" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="379dp"
+        android:layout_height="204dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pressedTxt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
