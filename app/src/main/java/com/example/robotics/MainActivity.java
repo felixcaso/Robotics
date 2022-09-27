@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
 
     //Attributes
     private ListView listView;
-    private TextView displayTxt;
+    public static TextView displayTxt;
     private TextView pressedTxt;
     private Dpad dpad = new Dpad();
 
     //Bluetooth Attributes
     private final UUID UUID_PORT = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
     private BluetoothDevice swarmDevice;
-    private final BluetoothAdapter BT = BluetoothAdapter.getDefaultAdapter();
+    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private BluetoothSocket socket;
     private OutputStream outputStream;
 
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         pressedTxt = (TextView) findViewById(R.id.pressedTxt);
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(deviceList);
+
 
     }// end onCreate
 
@@ -196,12 +197,12 @@ public class MainActivity extends AppCompatActivity {
             switch (press) {
                 case Dpad.LEFT:
                     // Do something for LEFT direction press
-                    sendData("L");
+
                     return true;
 
                 case Dpad.RIGHT:
                     // Do something for RIGHT direction press
-                    sendData("R");
+
                     return true;
 
                 case Dpad.UP:
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
                 case Dpad.CENTER:
-                    sendData("C");
+
                     return true;
 
             }
@@ -232,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < historySize; i++) {
                 // Process the event at historical position i
                 processJoystickInput(event, i);
-
 
             }
 
@@ -299,18 +299,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Update the ship object based on the new x and y values
-        sendData(String.valueOf(x));
+//        pressedTxt.setText("X axis: "+String.valueOf(x) + " Y axis: "+String.valueOf(y));
+        //sendData(String.valueOf(x));
 
     }//end processJoyStickInput
-
-
 
 
 
     //Bluetooth Methods
     @SuppressLint("MissingPermission")
     public void turnBTOn() {
-        if (!BT.isEnabled()) {
+        if (!bluetoothAdapter.isEnabled()) {
 
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, 1);
@@ -323,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     public void off(View v) {
-        BT.disable();
+        bluetoothAdapter.disable();
         Toast.makeText(getApplicationContext(), "Turned off", Toast.LENGTH_LONG).show();
     }
 
@@ -335,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     public void listPairedSwarms() {
-        Set <BluetoothDevice> deviceList = BT.getBondedDevices();// A list of Bluetooth devices
+        Set <BluetoothDevice> deviceList = bluetoothAdapter.getBondedDevices();// A list of Bluetooth devices
         ArrayList <String> deviceNames = new ArrayList<String>();// A list of device names
 
         // looping through deviceList to populate deviceNames
@@ -352,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     private void initSwarmConnection(){
-        Set<BluetoothDevice> pairedDevice = BT.getBondedDevices();
+        Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
 
         for(BluetoothDevice pDevice: pairedDevice){
             if(pDevice.getName().equals(chosenSwarm)){
@@ -374,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             outputStream.write(data.getBytes());
-            pressedTxt.setText("Button Pressed: "+data);
+            pressedTxt.setText("Button Pressed: " + data);
 
         }catch(IOException e){
             e.printStackTrace();
@@ -382,10 +381,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }//end sendData
-
-
-
-
 
 
 
