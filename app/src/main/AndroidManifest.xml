@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Robotics">
         <activity
-            android:name=".MainActivity"
+            android:name=".userInterface.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

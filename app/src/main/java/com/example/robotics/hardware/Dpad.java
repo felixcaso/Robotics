@@ -1,13 +1,13 @@
-package com.example.robotics;
+package com.example.robotics.hardware;
 
 import android.view.*;
 
 public class Dpad {
-    final static int UP       = 0;
-    final static int LEFT     = 1;
-    final static int RIGHT    = 2;
-    final static int DOWN     = 3;
-    final static int CENTER   = 4;
+    public final static int UP       = 0;
+    public final static int LEFT     = 1;
+    public final static int RIGHT    = 2;
+    public final static int DOWN     = 3;
+    public final static int CENTER   = 4;
 
     int directionPressed = -1; // initialized to -1
 

@@ -1,4 +1,4 @@
-package com.example.robotics;
+package com.example.robotics.userInterface;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,20 +22,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.robotics.hardware.Dpad;
+import com.example.robotics.R;
+import com.example.robotics.Telemetry;
+import com.example.robotics.hardware.DcMotor;
+import com.example.robotics.hardware.HardwareMap;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
-
-    //Attributes
+public class MainActivity extends AppCompatActivity implements Runnable{
+    /*
+    * Main Class Attributes
+    * Establishing User Interface Component variables
+    * Establishing Bluetooth Component variables
+    */
     private ListView listView;
-    public static TextView displayTxt;
+    public TextView displayTxt;
     private TextView pressedTxt;
-    private Dpad dpad = new Dpad();
-
+    private final Dpad dpad = new Dpad();
     //Bluetooth Attributes
     private final UUID UUID_PORT = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
     private BluetoothDevice swarmDevice;
@@ -45,95 +53,58 @@ public class MainActivity extends AppCompatActivity {
 
     private String chosenSwarm;
 
+    HardwareMap hardwareMap;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUIComponents();
 
-        //create variables for items
-        displayTxt = (TextView) findViewById(R.id.displayTxt);
-        pressedTxt = (TextView) findViewById(R.id.pressedTxt);
-        listView = (ListView) findViewById(R.id.listView);
-        listView.setOnItemClickListener(deviceList);
 
 
     }// end onCreate
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.example_menu,menu);
-        return true;
-    }//end onCreateOptionsMenu
+
+
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.BT_menu:
-                turnBTOn();
-                try{
-                    if(socket != null && socket.isConnected()){
-                        socket.close();
-                        displayTxt.setText(R.string.swarmConnection);
-                    }
-                }catch(IOException ex){
-                    ex.printStackTrace();
-                }
-                return true;
+    public void run() {
+        Telemetry tel = new Telemetry();
+        DcMotor m1 = new DcMotor("frontLeftWheel", HardwareMap.Ports.PORT1);
 
-            case R.id.item1:
-                Toast.makeText(this,"Item 1 Selected",Toast.LENGTH_SHORT).show();
-                return true;
+        //DcMotor m2 = hardwareMap.dcMotor.get("m2",)
 
-            case R.id.exit:
-                finish();
-                return true;
 
-            case R.id.settings:
-                Toast.makeText(this,"Settings Selected",Toast.LENGTH_SHORT).show();
-                return true;
+        tel.addData("m1port",1);
+        tel.addData("m1_power",.5);
+        tel.addData("delay",1000);
+        String msg = tel.getDataNumbers().toString();
+        sendData(msg);
 
-            case R.id.subItem1:
-                Toast.makeText(this,"SubItem 1 Selected",Toast.LENGTH_SHORT).show();
-                return true;
 
-            case R.id.subItem2:
-                Toast.makeText(this,"SubItem 2 Selected",Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }//end switch
+    }
 
 
 
-    }//end itemSelected
 
-    @SuppressLint("MissingPermission")
-    private AdapterView.OnItemClickListener deviceList = new AdapterView.OnItemClickListener(){
-        public void onItemClick(AdapterView parent, View view, int pos, long id){
 
-            chosenSwarm = (String) listView.getItemAtPosition(pos);
-            System.out.println("Swarm selected: "+ chosenSwarm);
-            initSwarmConnection();
-            listView.setVisibility(ListView.INVISIBLE);
+    public void autonomousMode(){
+        Telemetry tel = new Telemetry();
 
-        }
-    };
 
+        tel.addData("m1",.5);
+        tel.addData("delay",1000);
+        tel.addData("m1",-.5);
+        tel.update();
+    }
 
     //Game Controller input Methods
-    @Override
-    public void onBackPressed() {
-
-    }// end onBackPressed()
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //boolean handled = false
-
         if ((event.getSource() & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD) {
 
             if (keyCode == KeyEvent.KEYCODE_BUTTON_A) {
@@ -149,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (keyCode == KeyEvent.KEYCODE_BUTTON_Y) {
-                sendData("Y");
+                run();
+
+
             }
 
 
@@ -306,11 +279,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Bluetooth Methods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*Bluetooth Methods
+    * Do not change Anything below this Code
+    * This will interrupt Bluetooth connectivity
+    * This must all happen in this class
+    * */
+
     @SuppressLint("MissingPermission")
     public void turnBTOn() {
         if (!bluetoothAdapter.isEnabled()) {
-
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, 1);
             Toast.makeText(getApplicationContext(), "Bluetooth Turned On", Toast.LENGTH_LONG).show();
@@ -369,21 +360,105 @@ public class MainActivity extends AppCompatActivity {
         }//end for loop pairedDevice
     }// end initSwarmConnection()
 
-    private void sendData(String data){
-        try {
+    public void sendData(String data){
+        if(data != null) {
+            try {
 
-            outputStream.write(data.getBytes());
-            pressedTxt.setText("Button Pressed: " + data);
+                outputStream.write(data.getBytes());
+                pressedTxt.setText("Button Pressed: " + data);
 
-        }catch(IOException e){
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
 
     }//end sendData
 
+    /* User Interface
+    * Code below is for User Interface
+    * Setting up text boxes menus and buttons
+    *
+    * Overriding builtin function for our own use
+    * Mostly being used for User Interfacing
+    * DO NOT Edited unless necessary
+    */
+    private void setUIComponents(){
+        //create variables for items
+        displayTxt = (TextView) findViewById(R.id.displayTxt);
+        pressedTxt = (TextView) findViewById(R.id.pressedTxt);
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(deviceList);
+    }
+    private final AdapterView.OnItemClickListener deviceList = new AdapterView.OnItemClickListener(){
+        public void onItemClick(AdapterView parent, View view, int pos, long id){
+            chosenSwarm = (String) listView.getItemAtPosition(pos);
+            System.out.println("Swarm selected: "+ chosenSwarm);
+            initSwarmConnection();
+            listView.setVisibility(ListView.INVISIBLE);
+
+        }
+    };
+
+    private boolean setMenuOptions(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.BT_menu:
+                turnBTOn();
+                try{
+                    if(socket != null && socket.isConnected()){
+                        socket.close();
+                        displayTxt.setText(R.string.swarmConnection);
+                    }
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                return true;
+
+            case R.id.BATT_life:
+                Toast.makeText(this,"Robot Battery Health Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item1:
+                Toast.makeText(this,"Item 1 Selected Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.exit:
+                finish();
+                return true;
+
+            case R.id.settings:
+                Toast.makeText(this,"Settings Selected Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.subItem1:
+                Toast.makeText(this,"SubItem 1 Selected Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.subItem2:
+                Toast.makeText(this,"SubItem 2 Selected Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }//end switch
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }// end onBackPressed()
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_options,menu);
+        return true;
+    }//end onCreateOptionsMenu
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return setMenuOptions(item);
+    }//end itemSelected
 
 
 
 }//end main activity
-
