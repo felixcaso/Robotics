@@ -1,7 +1,45 @@
 <resources>
-    <string name="app_name">Robotics</string>
+    <string name="app_name">Swarm Robotics</string>
     <string name="fork_rev_robotics"> S.A.R Driver Station</string>
     <string name="swarmConnection">Not Connected</string>
     <string name="button">Connect</string>
     <string name="button_pressed">Button Pressed:</string>
+    <string name="configure_robot">Robot Not Configured</string>
+
+    <string name="motor1">Motor1</string>
+    <string name="motor2">Motor2</string>
+    <string name="motor3">Motor3</string>
+    <string name="motor4">Motor4</string>
+    <string name="motor5">Motor5</string>
+    <string name="motor6">Motor6</string>
+
+    <string name="servo1">Servo1</string>
+    <string name="servo2">Servo2</string>
+    <string name="servo3">Servo3</string>
+    <string name="servo4">Servo4</string>
+
+
+
+
+    <string name="title_activity_settings">SettingsActivity</string>
+
+
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="clear_all">Clear All</string>
+
 </resources>

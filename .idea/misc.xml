@@ -3,11 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2125" />
+        <entry key="app/src/main/res/drawable/ic_batt_life.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/ic_bt.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.203" />
         <entry key="app/src/main/res/drawable/ic_logoBG_background.xml" value="0.1155" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17028985507246377" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.28387170321699506" />
+        <entry key="app/src/main/res/layout/activity_motor_configuration.xml" value="0.271673583984375" />
+        <entry key="app/src/main/res/layout/activity_saved_robot_configs.xml" value="0.3251414644545403" />
+        <entry key="app/src/main/res/layout/settings_activity.xml" value="0.17617753623188406" />
         <entry key="app/src/main/res/menu/example_menu.xml" value="0.2171875" />
+        <entry key="app/src/main/res/menu/menu_options.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.224" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.17617753623188406" />
       </map>
     </option>
   </component>

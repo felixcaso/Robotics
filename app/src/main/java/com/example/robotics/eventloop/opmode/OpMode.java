@@ -3,13 +3,12 @@ package com.example.robotics.eventloop.opmode;
 
 
 import com.example.robotics.hardware.Gamepad;
-import com.example.robotics.hardware.HardwareMap;
-import com.example.robotics.Telemetry;
+import com.example.robotics.hardware.Telemetry;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Base class for user defined operation modes (op modes).
+ * Base class for user defined operation modes (Driver modes).
  */
 public abstract class OpMode {
 
@@ -26,12 +25,12 @@ public abstract class OpMode {
     /**
      * Telemetry Data
      */
-    public Telemetry telemetry = new Telemetry();
+    public final Telemetry telemetry = new Telemetry();
 
     /**
      * Hardware Mappings
      */
-    public HardwareMap hardwareMap = new HardwareMap();
+    public final HardwareMapp hardwareMap = new HardwareMapp();
 
     /**
      * number of seconds this op mode has been running, this is

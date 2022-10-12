@@ -1,4 +1,4 @@
-package com.example.robotics;
+package com.example.robotics.hardware;
 
 import java.util.HashMap;
 
@@ -11,6 +11,10 @@ public class Telemetry{
     public Telemetry(){
         this.dataNumbers = new HashMap<>();
         this.dataStrings = new HashMap<>();
+    }
+
+    public void initSwarmMind(){
+        addData("enableAutonomous","ON");
     }
 
     public void addData(String key, float val){
@@ -26,7 +30,7 @@ public class Telemetry{
     }
 
     public void addData(String key, String val){
-        dataStrings.put(key,val);
+        dataStrings.put(key, val);
     }
 
     public boolean hasData() {

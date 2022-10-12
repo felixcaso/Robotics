@@ -1,5 +1,6 @@
 package com.example.robotics.eventloop.opmode;
 import com.example.robotics.eventloop.ThreadPool;
+import com.example.robotics.userInterface.MainActivity;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutorService;
@@ -12,12 +13,11 @@ import java.util.concurrent.TimeUnit;
  * OpMode.
  */
 @SuppressWarnings("unused")
-public abstract class LinearOpMode extends OpMode {
+public abstract class LinearOpMode extends MainActivity {
 
     //------------------------------------------------------------------------------------------------
     // State
     //------------------------------------------------------------------------------------------------
-
     private LinearOpModeHelper helper = null;
     private ExecutorService executorService = null;
     private volatile boolean isStarted = false;
@@ -28,21 +28,24 @@ public abstract class LinearOpMode extends OpMode {
     //------------------------------------------------------------------------------------------------
 
     public LinearOpMode() {
+
     }
 
     //------------------------------------------------------------------------------------------------
     // Operations
     //------------------------------------------------------------------------------------------------
 
+    abstract public void runOpMode() throws InterruptedException;
+
+
+
     /**
      * Override this method and place your code here.
      * <p>
      * Please do not swallow the InterruptedException, as it is used in cases
      * where the op mode needs to be terminated early.
-     *
-     * @throws InterruptedException
      */
-    abstract public void runOpMode() throws InterruptedException;
+
 
     /**
      * Pauses the Linear Op Mode until start has been pressed or until the current thread
@@ -167,8 +170,8 @@ public abstract class LinearOpMode extends OpMode {
      * <p>Note that internally this method calls {@link #idle()}</p>
      *
      * @return whether the OpMode is currently active. If this returns false, you should
-     * break out of the loop in your {@link #runOpMode()} method and return to its caller.
-     * @see #runOpMode()
+     * break out of the loop in your method and return to its caller.
+     * //@see #runOpMode()
      * @see #isStarted()
      * @see #isStopRequested()
      */
@@ -205,28 +208,25 @@ public abstract class LinearOpMode extends OpMode {
     /**
      * From the non-linear OpMode; do not override
      */
-//    @Override
-//    final public void init() {
-//        this.executorService = ThreadPool.newSingleThreadExecutor("LinearOpMode");
-//        this.helper = new LinearOpModeHelper();
-//        this.isStarted = false;
-//        this.stopRequested = false;
-//
-//        this.executorService.execute(helper);
-//    }
+    final public void init() {
+        this.executorService = ThreadPool.newSingleThreadExecutor("LinearOpMode");
+        this.helper = new LinearOpModeHelper();
+        this.isStarted = false;
+        this.stopRequested = false;
+
+        this.executorService.execute(helper);
+    }
 
     /**
      * From the non-linear OpMode; do not override
      */
-//    @Override
-//    final public void init_loop() {
-//        handleLoop();
-//    }
+    final public void init_loop() {
+        handleLoop();
+    }
 
     /**
      * From the non-linear OpMode; do not override
      */
-    @Override
     final public void start() {
         stopRequested = false;
         isStarted = true;
@@ -238,7 +238,6 @@ public abstract class LinearOpMode extends OpMode {
     /**
      * From the non-linear OpMode; do not override
      */
-    @Override
     final public void loop() {
         handleLoop();
     }
@@ -246,7 +245,6 @@ public abstract class LinearOpMode extends OpMode {
     /**
      * From the non-linear OpMode; do not override
      */
-    @Override
     final public void stop() {
 
         // make isStopRequested() return true (and opModeIsActive() return false)

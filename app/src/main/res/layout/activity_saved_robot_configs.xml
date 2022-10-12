@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".userInterface.SavedRobotConfigs">
+
+    <Button
+        android:id="@+id/savedConfig1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:onClick="config1Clicked"
+        android:text="config1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/savedConfig2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="config2Clicked"
+        android:text="Config2"
+        app:layout_constraintStart_toStartOf="@+id/savedConfig1"
+        app:layout_constraintTop_toBottomOf="@+id/savedConfig1" />
+
+    <Button
+        android:id="@+id/savedConfig6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="config6Clicked"
+        android:text="Config6"
+        app:layout_constraintStart_toStartOf="@+id/savedConfig5"
+        app:layout_constraintTop_toBottomOf="@+id/savedConfig5" />
+
+    <Button
+        android:id="@+id/savedConfig4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="config4Clicked"
+        android:text="Config4"
+        app:layout_constraintStart_toStartOf="@+id/savedConfig3"
+        app:layout_constraintTop_toBottomOf="@+id/savedConfig3" />
+
+    <Button
+        android:id="@+id/savedConfig5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="config5Clicked"
+        android:text="Config5"
+        app:layout_constraintStart_toStartOf="@+id/savedConfig4"
+        app:layout_constraintTop_toBottomOf="@+id/savedConfig4" />
+
+    <Button
+        android:id="@+id/savedConfig3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="config3Clicked"
+        android:text="Config3"
+        app:layout_constraintStart_toStartOf="@+id/savedConfig2"
+        app:layout_constraintTop_toBottomOf="@+id/savedConfig2" />
+
+    <Button
+        android:id="@+id/newConfigBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginBottom="61dp"
+        android:onClick="onNewClicked"
+        android:text="New"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="@string/clear_all"
+        android:onClick="onClearClicked"
+        app:layout_constraintBottom_toBottomOf="@+id/newConfigBtn"
+        app:layout_constraintStart_toEndOf="@+id/newConfigBtn"
+        app:layout_constraintTop_toTopOf="@+id/newConfigBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
