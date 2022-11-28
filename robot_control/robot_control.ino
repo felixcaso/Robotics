@@ -1,4 +1,5 @@
 //arduino Robot Contorller
+//Hi its Eitan
 #include <SoftwareSerial.h>
 SoftwareSerial BT(2, 3);
 
