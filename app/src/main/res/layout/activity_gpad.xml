@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:screenOrientation="landscape"
+    tools:context=".GPad">
+
+
+    <Button
+        android:id="@+id/Abtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_button"
+        android:onClick="onClickA"
+        android:text="A"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/Bbtn"
+        app:layout_constraintStart_toEndOf="@+id/Xbtn"
+        app:layout_constraintTop_toBottomOf="@+id/Xbtn" />
+
+    <Button
+        android:id="@+id/Xbtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_button"
+        android:onClick="onClickX"
+        android:text="X"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/Ybtn"
+        app:layout_constraintTop_toBottomOf="@+id/Ybtn" />
+
+    <Button
+        android:id="@+id/Bbtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_button"
+        android:onClick="onClickB"
+        android:text="B"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/Ybtn"
+        app:layout_constraintTop_toBottomOf="@+id/Ybtn" />
+
+    <Button
+        android:id="@+id/upBtn"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/ic_twotone_arrow_circle_up_24"
+        android:longClickable="true"
+        android:onClick="onClickUp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/downBtn"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:background="@drawable/ic_twotone_arrow_circle_down_24"
+        android:onClick="onClickDown"
+        app:layout_constraintStart_toEndOf="@+id/leftBtn"
+        app:layout_constraintTop_toBottomOf="@+id/leftBtn" />
+
+    <Button
+        android:id="@+id/leftBtn"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:background="@drawable/ic_twotone_arrow_circle_left_24"
+        android:onClick="onClickLeft"
+        app:layout_constraintEnd_toStartOf="@+id/upBtn"
+        app:layout_constraintTop_toBottomOf="@+id/upBtn" />
+
+    <Button
+        android:id="@+id/rightBtn"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:background="@drawable/ic_twotone_arrow_circle_right_24"
+        android:linksClickable="false"
+        android:longClickable="false"
+        android:onClick="onClickRight"
+        android:paddingLeft="0"
+        app:layout_constraintStart_toEndOf="@+id/upBtn"
+        app:layout_constraintTop_toBottomOf="@+id/upBtn" />
+
+    <Button
+        android:id="@+id/Ybtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="112dp"
+        android:background="@drawable/round_button"
+        android:longClickable="true"
+        android:onClick="onClickY"
+        android:text="Y"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_bt"
+        android:onClick="onClickBt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displaySwarmTxt" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="337dp"
+        android:layout_height="198dp"
+        android:layout_marginTop="124dp"
+        android:background="#F4F3F3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btBtn" />
+
+    <TextView
+        android:id="@+id/displaySwarmTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="SWARM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

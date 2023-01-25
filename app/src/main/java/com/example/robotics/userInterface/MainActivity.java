@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.robotics.Driver2023;
+import com.example.robotics.GPad;
 import com.example.robotics.hardware.DcMotor;
 import com.example.robotics.hardware.Dpad;
 import com.example.robotics.R;
@@ -129,6 +130,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 sendData("L1");
             }
 
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
+                sendData("R2");
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+                sendData("L2");
+            }
+
             if (keyCode == KeyEvent.KEYCODE_BUTTON_THUMBL) {
                 sendData("L3");
             }
@@ -165,12 +174,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             switch (press) {
                 case Dpad.LEFT:
                     // Do something for LEFT direction press
-
+                    sendData("L");
                     return true;
 
                 case Dpad.RIGHT:
                     // Do something for RIGHT direction press
-
+                    sendData("R");
                     return true;
 
                 case Dpad.UP:
@@ -272,9 +281,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     }//end processJoyStickInput
 
-
-
-
     /**
     * Bluetooth Methods
     * Do not change Anything below this Code
@@ -336,7 +342,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public void sendData(String data){
         if(data != null) {
             try {
-
                 outputStream.write(data.getBytes());
                 pressedTxt.setText("Button Pressed: " + data);
 
@@ -505,7 +510,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
      * Code below is for Interfacing with the menu on
      * the main activity. Allowing setting to be configured
      * DO NOT Edited unless Instructed
-     *
      */
     private boolean setMenuOptions(MenuItem item){
         switch(item.getItemId()){
@@ -524,6 +528,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             case R.id.BATT_life:
                 Toast.makeText(this,"Robot Battery Health Coming Soon!!!",Toast.LENGTH_SHORT).show();
+//                sendData("batteryCheck");
                 music.start();
                 return true;
 
@@ -554,9 +559,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 }
                 return true;
 
-
             case R.id.selfCheck:
                 Toast.makeText(this,"Self Check Coming Soon!!!",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.virtualController:
+                Intent i = new Intent(this, GPad.class);
+                i.putExtra("device",swarmDevice);
+                startActivity(i);
                 return true;
 
             case R.id.exit:

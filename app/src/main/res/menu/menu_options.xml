@@ -8,6 +8,11 @@
         android:title="Bluetooth Menu"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/virtualController"
+        android:icon="@drawable/ic_baseline_gamepad_24"
+        android:title="Virtual Controller"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/BATT_life"
         android:icon="@drawable/ic_batt_life"
         android:title="Battery Life"
@@ -33,9 +38,10 @@
         android:title="Self Insepct"
         app:showAsAction="never" />
 
+
+
     <item
         android:id="@+id/exit"
-        android:icon="@android:drawable/ic_lock_power_off"
         android:title="Exit"
         app:showAsAction="never" />
 <!--        <menu>-->

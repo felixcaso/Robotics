@@ -30,7 +30,7 @@ public abstract class OpMode {
     /**
      * Hardware Mappings
      */
-    public final HardwareMapp hardwareMap = new HardwareMapp();
+//    public final HardwareMapp hardwareMap = new HardwareMapp();
 
     /**
      * number of seconds this op mode has been running, this is
